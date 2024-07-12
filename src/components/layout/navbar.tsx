@@ -13,6 +13,7 @@ import Link from "next/link";
 import LinkList from "@/components/layout/link-list";
 
 import { Routes } from "@/server/routes";
+import MobileSidebar from "@/components/layout/m.sidebar";
 
 function Navbar() {
   return (
@@ -24,6 +25,9 @@ function Navbar() {
           </Link>
           <LinkList />
         </div>
+
+        <MobileSidebar className="block md:!hidden" />
+
         <div>
           <button className="btn btn-ghost btn-circle">Theme</button>
         </div>
