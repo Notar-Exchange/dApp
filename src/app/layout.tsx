@@ -1,7 +1,9 @@
 import "@/styles/globals.css";
 
+import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
+
+import Navbar from "@/components/layout/navbar";
 
 // - Route Segment Config
 export const dynamic = "force-dynamic";
@@ -19,7 +21,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
