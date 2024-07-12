@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 
 import Navbar from "@/components/layout/navbar";
 import Content from "@/components/layout/content";
+import ThemeProvider from "@/components/theme/provider";
 
 // - Route Segment Config
 export const dynamic = "force-dynamic";
@@ -23,8 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <Navbar />
-        <Content>{children}</Content>
+        <ThemeProvider attribute="class" enableSystem>
+          <Navbar />
+          <Content>{children}</Content>
+        </ThemeProvider>
       </body>
     </html>
   );
