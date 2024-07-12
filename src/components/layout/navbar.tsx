@@ -16,13 +16,12 @@ import { Routes } from "@/server/routes";
 
 function Navbar() {
   return (
-    <nav className="fixed start-0 top-0 z-50 h-14 w-full border-b-2 bg-muted p-4">
+    <nav className="fixed start-0 top-0 z-50 w-full border-b-2 bg-muted p-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="hidden items-center gap-4 md:flex">
           <Link href={Routes.path.default}>
             <Logo />
           </Link>
-
           <LinkList />
         </div>
         <div>

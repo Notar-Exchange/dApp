@@ -16,5 +16,6 @@ export const Routes = {
   },
   path: {
     default: "/",
+    swap: "/swap"
   },
 } as const;
