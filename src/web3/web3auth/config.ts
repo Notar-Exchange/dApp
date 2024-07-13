@@ -8,6 +8,8 @@
  * -----
  */
 
+"use client";
+
 import { CHAIN_NAMESPACES, type CustomChainConfig } from "@web3auth/base";
 import { Chain } from "@/web3/lib/chain";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -29,4 +31,4 @@ export const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },
 });
 
-export const clientId = env.WEB3_CLIENT_ID;
+export const clientId = env.NEXT_PUBLIC_WEB3_CLIENT_ID;
