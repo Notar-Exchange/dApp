@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftRightIcon, Loader2 } from "lucide-react";
+import { useWeb3 } from "@/web3/hook/use-web3";
 
 import SwapInput from "@/components/swap/input";
 
@@ -26,6 +27,8 @@ const defaultValues: SwapSchemaType = {
 
 // - Component
 function SwapForm() {
+  const { isConnected } = useWeb3();
+
   const form = useForm<SwapSchemaType>({
     defaultValues,
     resolver: zodResolver(SwapSchema),
@@ -76,11 +79,12 @@ function SwapForm() {
             disabled={form.formState.isSubmitting}
             rate={1.1}
           />
+
           <Button
             type="submit"
             size="lg"
             className="h-16 w-full text-2xl font-bold"
-            disabled={form.formState.isSubmitting}
+            disabled={!isConnected}
           >
             {form.formState.isSubmitting ? (
               <Loader2 className="animate-spin" />

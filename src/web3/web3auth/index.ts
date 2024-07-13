@@ -17,6 +17,8 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 
 export type Web3Auth = ReturnType<typeof createWeb3Auth>;
 
+let web3auth: Web3Auth;
+
 const createWeb3Auth = () => {
   const web3auth = new Web3AuthNoModal({
     clientId,
@@ -25,13 +27,22 @@ const createWeb3Auth = () => {
     enableLogging: true,
   });
 
-  const adapter = new MetamaskAdapter();
+  const adapter = new MetamaskAdapter({
+    clientId,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  });
+
   web3auth.configureAdapter(adapter);
 
   return web3auth;
 };
 
+const getWeb3Auth = () => {
+  if (!web3auth) {
+    web3auth = createWeb3Auth();
+  }
 
-const web3auth = createWeb3Auth();
+  return web3auth;
+};
 
-export { web3auth };
+export { getWeb3Auth };

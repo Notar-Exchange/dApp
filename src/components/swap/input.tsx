@@ -25,7 +25,7 @@ import {
   calculateRateValue,
 } from "@/lib/swap";
 
-import Image from "next/image";
+import { DollarSign, EuroIcon } from "lucide-react";
 
 // - Types
 type Props<Value extends FieldValues> = {
@@ -94,13 +94,12 @@ function SwapInput<FormValue extends FieldValues>({
                     onFocus={(event) => event.target.select()}
                   />
                   <div className="absolute right-1 top-1/2 flex -translate-y-1/2 gap-x-1 rounded-full bg-muted p-2">
-                    <Image
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                      src="https://placehold.co/22x22"
-                      alt="The logo of a crypto currency"
-                      width={22}
-                      height={22}
-                    />
+                    {token === "USDT" ? (
+                      <DollarSign className="text-muted" />
+                    ) : (
+                      <EuroIcon className="text-muted" />
+                    )}
+
                     <span className="font-medium text-muted-foreground">
                       {token}
                     </span>

@@ -20,7 +20,7 @@ export const authConfig: NextAuthConfig = {
     signOut: "/",
     newUser: "/",
     error: "/",
-    verifyRequest: "/"
+    verifyRequest: "/",
   },
   session: {
     strategy: "jwt",
@@ -28,6 +28,8 @@ export const authConfig: NextAuthConfig = {
   },
   callbacks: {
     session: ({ session, token }) => {
+      console.log("session", session);
+      console.log("token", token);
       session.address = token.sub as unknown as string;
       return session;
     },
@@ -43,10 +45,12 @@ export const authConfig: NextAuthConfig = {
         },
       },
       async authorize(credentials) {
+        console.log("credentials", credentials);
         const { address } = credentials;
         const isValid = isAddress(address);
 
         if (!isValid) return null;
+        console.log("address", address);
 
         return { id: address };
       },

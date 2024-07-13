@@ -12,12 +12,13 @@
 
 import type { IProvider } from "@web3auth/base";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { web3auth } from "@/web3/web3auth";
+import { getWeb3Auth } from "@/web3/web3auth";
 import { BrowserProvider } from "ethers/providers";
 import { isAddress } from "ethers/address";
 import { formatEther } from "ethers/utils";
 import { WALLET_ADAPTERS } from "@web3auth/base";
-import { signIn, useSession, signOut } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export type UseWeb3AuthData = ReturnType<typeof useWeb3>;
 
@@ -27,12 +28,14 @@ export const useWeb3 = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [address, setAddress] = useState<string | null>(null);
+  const router = useRouter();
   const { status } = useSession();
 
   // - Effects
   useEffect(() => {
     const init = async () => {
       try {
+        const web3auth = getWeb3Auth();
         await web3auth.init();
         setProvider(web3auth.provider);
 
@@ -60,6 +63,7 @@ export const useWeb3 = () => {
     try {
       setLoading(true);
 
+      const web3auth = getWeb3Auth();
       const web3authProvider = await web3auth.connectTo(
         WALLET_ADAPTERS.METAMASK,
       );
@@ -70,21 +74,19 @@ export const useWeb3 = () => {
       }
     } finally {
       setLoading(false);
+      router.push("/");
     }
-  }, [isConnected]);
+  }, [isConnected, router]);
 
   const getUserInfo = useCallback(async () => {
+    const web3auth = getWeb3Auth();
     const user = await web3auth.getUserInfo();
     console.log(user);
     return user;
   }, []);
 
   const logout = useCallback(async () => {
-    await web3auth.logout();
-    setProvider(null);
-    setConnected(false);
-    console.log("logged out");
-    await signOut({ callbackUrl: "/", redirect: false });
+    console.log("logging out");
   }, []);
 
   const getAddress = useCallback(async () => {
@@ -164,7 +166,7 @@ export const useWeb3 = () => {
   const authenticate = useCallback(async () => {
     try {
       if (!isConnected) {
-        await login();
+        return;
       }
 
       if (status === "unauthenticated" && isConnected) {
@@ -180,19 +182,19 @@ export const useWeb3 = () => {
       console.log("Authentication failed with error:", error);
       window.alert(error);
     }
-  }, [status, isConnected, getAddress, login]);
+  }, [status, isConnected, getAddress]);
 
   useEffect(() => {
     if (isConnected && status === "unauthenticated") {
       authenticate().catch(console.error);
     }
 
-    if (!isConnected && status === "authenticated") {
-      console.log("Disconnected!");
-      setAuthenticated(false);
-      logout().catch(console.error);
-      return;
-    }
+    // if (!isConnected && status === "authenticated") {
+    //   console.log("Disconnected!");
+    //   setAuthenticated(false);
+    //   logout().catch(console.error);
+    //   return;
+    // }
   }, [status, isConnected, authenticate, logout]);
 
   const contextValue = useMemo(

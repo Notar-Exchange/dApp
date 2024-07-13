@@ -17,16 +17,19 @@ import { Loader2 } from "lucide-react";
 
 type Props = ButtonProps;
 
-const loadTitle = (web3: UseWeb3AuthData): ReactNode => {
-  if (web3.isLoading) {
+const loadTitle = (
+  isLoading?: boolean | null,
+  isConnected?: boolean | null,
+  address?: string | null,
+): ReactNode => {
+  if (isLoading) {
     return <Loader2 className="animate-spin" />;
   }
 
-  if (!web3.isConnected) {
+  if (!isConnected) {
     return "Connect Wallet";
   }
 
-  const address = web3.address;
   if (!address) {
     return "Re-Connect Wallet";
   }
@@ -42,10 +45,10 @@ function ConnectButton(props: Props) {
       shape="pill"
       type="button"
       {...props}
-      onClick={web3.isConnected ? web3.logout : web3.login}
-      disabled={web3.isLoading}
+      onClick={web3?.isConnected ? web3?.logout : web3?.login}
+      disabled={web3?.isLoading}
     >
-      {loadTitle(web3)}
+      {loadTitle(web3?.isLoading, web3?.isConnected, web3?.address)}
     </Button>
   );
 }
