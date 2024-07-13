@@ -30,6 +30,9 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_WEB3_CLIENT_ID: z.string(),
+    NEXT_PUBLIC_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
   },
 
   /**
@@ -41,6 +44,7 @@ export const env = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_URL: process.env.AUTH_URL,
     NEXT_PUBLIC_WEB3_CLIENT_ID: process.env.NEXT_PUBLIC_WEB3_CLIENT_ID,
+    NEXT_PUBLIC_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
