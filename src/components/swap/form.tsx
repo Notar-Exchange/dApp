@@ -17,6 +17,8 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftRightIcon } from "lucide-react";
 
+import SwapInput from "@/components/swap/input";
+
 // - Const
 const defaultValues: SwapSchemaType = {
   amount: 1,
@@ -38,6 +40,10 @@ function SwapForm() {
     console.log("Switch");
   };
 
+  const onMax = () => {
+    console.log("MAX");
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
@@ -52,8 +58,23 @@ function SwapForm() {
         </Button>
 
         <div className="flex flex-col gap-y-4">
-          <div>input</div>
-          <div>input</div>
+          <SwapInput<SwapSchemaType>
+            name="amount"
+            label="You want"
+            actionLabel="MAX+"
+            token="USDT"
+            control={form.control}
+            disabled={form.formState.isSubmitting}
+            onAction={onMax}
+          />
+          <SwapInput<SwapSchemaType>
+            name="amount"
+            label="You pay"
+            token="EUR"
+            control={form.control}
+            disabled={form.formState.isSubmitting}
+            rate={1.1}
+          />
         </div>
       </form>
     </Form>
