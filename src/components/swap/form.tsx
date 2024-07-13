@@ -39,10 +39,6 @@ function SwapForm() {
     console.log(values);
   };
 
-  const onSwitch = () => {
-    console.log("Switch");
-  };
-
   const onAppend = () => {
     const currentValue = form.getValues("amount");
     form.setValue("amount", Number(currentValue) + 10);
@@ -51,16 +47,6 @@ function SwapForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
-        <Button
-          className="absolute right-4 top-4"
-          variant="secondary"
-          type="button"
-          onClick={onSwitch}
-          disabled={form.formState.isSubmitting}
-        >
-          <ArrowLeftRightIcon />
-        </Button>
-
         <div className="flex flex-col gap-y-4">
           <SwapInput<SwapSchemaType>
             name="amount"

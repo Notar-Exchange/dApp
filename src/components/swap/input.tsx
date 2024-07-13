@@ -93,16 +93,15 @@ function SwapInput<FormValue extends FieldValues>({
                     }}
                     onFocus={(event) => event.target.select()}
                   />
-                  <div className="absolute right-1 top-1/2 flex -translate-y-1/2 gap-x-1 rounded-full bg-muted p-2">
-                    {token === "USDT" ? (
-                      <DollarSign className="text-muted" />
-                    ) : (
-                      <EuroIcon className="text-muted" />
-                    )}
-
+                  <div className="absolute right-1 top-1/2 flex -translate-y-1/2 items-center gap-x-1 rounded-full bg-muted p-2">
                     <span className="font-medium text-muted-foreground">
                       {token}
                     </span>
+                    {token === "USDT" ? (
+                      <DollarSign size={18} />
+                    ) : (
+                      <EuroIcon size={18} />
+                    )}
                   </div>
                 </div>
                 {onAction && (

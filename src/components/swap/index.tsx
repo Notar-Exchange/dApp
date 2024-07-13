@@ -13,7 +13,7 @@ import SwapCard from "./card";
 
 function Swap() {
   return (
-    <SwapCard title="Swap" description="Swap tokens">
+    <SwapCard title="Swap" description="Buy USDT using a trusted third party">
       <SwapForm />
     </SwapCard>
   );
