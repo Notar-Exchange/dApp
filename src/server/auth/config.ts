@@ -10,7 +10,9 @@
  * -----
  */
 
+import { isAddress } from "ethers/address";
 import type { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -28,6 +30,23 @@ export const authConfig: NextAuthConfig = {
     },
   },
   providers: [
-    // TODO: Credentials
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        address: {
+          label: "Address",
+          type: "text",
+          placeholder: "0x0",
+        },
+      },
+      async authorize(credentials) {
+        const { address } = credentials;
+        const isValid = isAddress(address);
+
+        if (!isValid) return null;
+
+        return { id: address };
+      },
+    }),
   ],
 };
