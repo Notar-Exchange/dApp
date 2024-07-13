@@ -24,7 +24,7 @@ type Props = {
   onClick?: (link: NavLink) => void;
 };
 
-function LinkList({ onClick, variant }: Props) {
+function LinkList({ onClick, variant = "vertical" }: Props) {
   const path = usePathname();
 
   if (configLinks.length === 0) {

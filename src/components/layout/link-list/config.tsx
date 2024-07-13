@@ -17,4 +17,9 @@ export const configLinks: NavLink[] = [
     href: Routes.path.swap,
     icon: "Merge",
   },
+  {
+    title: "Docs",
+    href: Routes.path.docs,
+    icon: "BookOpen",
+  },
 ];
