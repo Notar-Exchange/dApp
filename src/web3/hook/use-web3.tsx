@@ -17,18 +17,19 @@ import { BrowserProvider } from "ethers/providers";
 import { isAddress } from "ethers/address";
 import { formatEther } from "ethers/utils";
 import { WALLET_ADAPTERS } from "@web3auth/base";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export type UseWeb3AuthData = ReturnType<typeof useWeb3>;
 
 export const useWeb3 = () => {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [isConnected, setConnected] = useState(false);
-  const [isAuthenticated /*setAuthenticated*/] = useState(false);
+  const [isAuthenticated, setAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [address, setAddress] = useState<string | null>(null);
-  // const { status } = useSession();
+  const { status } = useSession();
 
+  // - Effects
   useEffect(() => {
     const init = async () => {
       try {
@@ -46,6 +47,11 @@ export const useWeb3 = () => {
     ~init();
   }, []);
 
+  useEffect(() => {
+    setAuthenticated(status === "authenticated");
+  }, [status]);
+
+  // - Actions
   const login = useCallback(async () => {
     if (isConnected) {
       return;
@@ -139,10 +145,6 @@ export const useWeb3 = () => {
     },
     [provider],
   );
-
-  // useEffect(() => {
-  //   setAuthenticated(status === "authenticated");
-  // }, [status]);
 
   useEffect(() => {
     if (!isConnected) {

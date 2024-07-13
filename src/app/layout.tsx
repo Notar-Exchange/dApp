@@ -6,6 +6,7 @@ import { GeistSans } from "geist/font/sans";
 import Navbar from "@/components/layout/navbar";
 import Content from "@/components/layout/content";
 import ThemeProvider from "@/components/theme/provider";
+import AuthProvider from "@/components/auth/provider";
 
 // - Route Segment Config
 export const dynamic = "force-dynamic";
@@ -28,10 +29,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <ThemeProvider attribute="class" enableSystem>
-          <Navbar />
-          <Content>{children}</Content>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider attribute="class" enableSystem>
+            <Navbar />
+            <Content>{children}</Content>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
