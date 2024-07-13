@@ -25,6 +25,7 @@ export const useWeb3 = () => {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [isConnected, setConnected] = useState(false);
   const [isAuthenticated /*setAuthenticated*/] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [address, setAddress] = useState<string | null>(null);
   // const { status } = useSession();
 
@@ -50,11 +51,19 @@ export const useWeb3 = () => {
       return;
     }
 
-    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.METAMASK);
-    setProvider(web3authProvider);
+    try {
+      setLoading(true);
 
-    if (web3auth.connected) {
-      setConnected(true);
+      const web3authProvider = await web3auth.connectTo(
+        WALLET_ADAPTERS.METAMASK,
+      );
+      setProvider(web3authProvider);
+
+      if (web3auth.connected) {
+        setConnected(true);
+      }
+    } finally {
+      setLoading(false);
     }
   }, [isConnected]);
 
@@ -153,9 +162,10 @@ export const useWeb3 = () => {
     () => ({
       isConnected,
       isAuthenticated,
+      isLoading,
       address,
     }),
-    [isConnected, isAuthenticated, address],
+    [isConnected, isAuthenticated, isLoading, address],
   );
 
   return {

@@ -10,12 +10,18 @@
 
 "use client";
 
+import type { ReactNode } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { useWeb3, type UseWeb3AuthData } from "@/web3/hook/use-web3";
+import { Loader2 } from "lucide-react";
 
 type Props = ButtonProps;
 
-const loadTitle = (web3: UseWeb3AuthData): string => {
+const loadTitle = (web3: UseWeb3AuthData): ReactNode => {
+  if (web3.isLoading) {
+    return <Loader2 className="animate-spin" />;
+  }
+
   if (!web3.isConnected) {
     return "Connect Wallet";
   }
