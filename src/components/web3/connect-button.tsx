@@ -38,7 +38,13 @@ function ConnectButton(props: Props) {
   const web3 = useWeb3();
 
   return (
-    <Button shape="pill" type="button" {...props} onClick={web3.login}>
+    <Button
+      shape="pill"
+      type="button"
+      {...props}
+      onClick={web3.isConnected ? web3.logout : web3.login}
+      disabled={web3.isLoading}
+    >
       {loadTitle(web3)}
     </Button>
   );

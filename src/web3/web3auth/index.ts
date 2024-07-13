@@ -17,7 +17,7 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 
 export type Web3Auth = ReturnType<typeof createWeb3Auth>;
 
-export const createWeb3Auth = () => {
+const createWeb3Auth = () => {
   const web3auth = new Web3AuthNoModal({
     clientId,
     web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
@@ -30,3 +30,8 @@ export const createWeb3Auth = () => {
 
   return web3auth;
 };
+
+
+const web3auth = createWeb3Auth();
+
+export { web3auth };

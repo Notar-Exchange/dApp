@@ -17,7 +17,7 @@ import { BrowserProvider } from "ethers/providers";
 import { isAddress } from "ethers/address";
 import { formatEther } from "ethers/utils";
 import { WALLET_ADAPTERS } from "@web3auth/base";
-import { useSession } from "next-auth/react";
+import { signIn, useSession, signOut } from "next-auth/react";
 
 export type UseWeb3AuthData = ReturnType<typeof useWeb3>;
 
@@ -84,12 +84,13 @@ export const useWeb3 = () => {
     setProvider(null);
     setConnected(false);
     console.log("logged out");
+    await signOut({ callbackUrl: "/", redirect: false });
   }, []);
 
   const getAddress = useCallback(async () => {
     if (!provider) {
       console.error("provider not initialized yet");
-      return;
+      return null;
     }
 
     const ethersProvider = new BrowserProvider(provider);
@@ -157,8 +158,42 @@ export const useWeb3 = () => {
       setAddress(value ?? null);
     };
 
-    ~loadAddress();
+    loadAddress().catch(console.error);
   }, [isConnected, getAddress]);
+
+  const authenticate = useCallback(async () => {
+    try {
+      if (!isConnected) {
+        await login();
+      }
+
+      if (status === "unauthenticated" && isConnected) {
+        const address = await getAddress();
+        console.log("Address available, signing in", address);
+        await signIn("credentials", { address, redirect: false });
+      }
+
+      if (status === "authenticated" && isConnected) {
+        console.log("Already authenticated");
+      }
+    } catch (error) {
+      console.log("Authentication failed with error:", error);
+      window.alert(error);
+    }
+  }, [status, isConnected, getAddress, login]);
+
+  useEffect(() => {
+    if (isConnected && status === "unauthenticated") {
+      authenticate().catch(console.error);
+    }
+
+    if (!isConnected && status === "authenticated") {
+      console.log("Disconnected!");
+      setAuthenticated(false);
+      logout().catch(console.error);
+      return;
+    }
+  }, [status, isConnected, authenticate, logout]);
 
   const contextValue = useMemo(
     () => ({
