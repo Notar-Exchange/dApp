@@ -40,8 +40,9 @@ function SwapForm() {
     console.log("Switch");
   };
 
-  const onMax = () => {
-    console.log("MAX");
+  const onAppend = () => {
+    const currentValue = form.getValues("amount");
+    form.setValue("amount", Number(currentValue) + 10);
   };
 
   return (
@@ -61,11 +62,11 @@ function SwapForm() {
           <SwapInput<SwapSchemaType>
             name="amount"
             label="You want"
-            actionLabel="MAX+"
+            actionLabel="10+"
             token="USDT"
             control={form.control}
             disabled={form.formState.isSubmitting}
-            onAction={onMax}
+            onAction={onAppend}
           />
           <SwapInput<SwapSchemaType>
             name="amount"
