@@ -10,12 +10,13 @@
 
 export const Routes = {
   list: {
-    public: ["/", "/swap"],
+    public: ["/", "/swap", "/swap/exchange"],
     protected: [""],
   },
   path: {
     default: "/",
     swap: "/swap",
+    exchange: "/swap/exchange",
   },
 };
 
