@@ -11,11 +11,22 @@
 export const Routes = {
   list: {
     public: ["/"],
-    private: [""],
     protected: [""],
   },
   path: {
     default: "/",
-    swap: "/swap"
+    swap: "/swap",
   },
-} as const;
+};
+
+export function isPublic(path?: string) {
+  if (!path) return false;
+
+  return Routes.list.public.includes(path);
+}
+
+export function isProtected(path?: string) {
+  if (!path) return false;
+
+  return Routes.list.protected.includes(path);
+}
