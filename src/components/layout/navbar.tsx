@@ -31,8 +31,8 @@ function Navbar() {
         <MobileSidebar className="block md:!hidden" />
 
         <div className="flex items-center gap-4">
-          <ThemeToggle />
           <ConnectButton />
+          <ThemeToggle />
         </div>
       </div>
     </nav>
