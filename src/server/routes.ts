@@ -10,7 +10,7 @@
 
 export const Routes = {
   list: {
-    public: ["/"],
+    public: ["/", "/swap"],
     protected: [""],
   },
   path: {
