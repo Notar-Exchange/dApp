@@ -16,36 +16,29 @@ import { web3auth } from "@/web3/web3auth";
 import { BrowserProvider } from "ethers/providers";
 import { isAddress } from "ethers/address";
 import { formatEther } from "ethers/utils";
+// import { useSession } from "next-auth/react";
+
+export type UseWeb3AuthData = ReturnType<typeof useWeb3>;
 
 export const useWeb3 = () => {
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [isConnected, setConnected] = useState(false);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth.initModal();
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setConnected(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    ~init();
-  }, []);
+  const [isAuthenticated /*setAuthenticated*/] = useState(false);
+  const [address, setAddress] = useState<string | null>(null);
+  // const { status } = useSession();
 
   const login = useCallback(async () => {
+    if (isConnected) {
+      return;
+    }
+
     const web3authProvider = await web3auth.connect();
     setProvider(web3authProvider);
 
     if (web3auth.connected) {
       setConnected(true);
     }
-  }, []);
+  }, [isConnected]);
 
   const getUserInfo = useCallback(async () => {
     const user = await web3auth.getUserInfo();
@@ -100,32 +93,77 @@ export const useWeb3 = () => {
     return balance;
   }, [provider, getAddress]);
 
-  const signMessage = useCallback(async (message: string) => {
-    if (!provider) {
-      console.error("provider not initialized yet");
+  const signMessage = useCallback(
+    async (message: string) => {
+      if (!provider) {
+        console.error("provider not initialized yet");
+        return;
+      }
+
+      const ethersProvider = new BrowserProvider(provider);
+      const signer = await ethersProvider.getSigner();
+
+      // Sign the message
+      const signedMessage = await signer.signMessage(message);
+
+      console.log(signedMessage);
+
+      return signedMessage;
+    },
+    [provider],
+  );
+
+  // useEffect(() => {
+  //   setAuthenticated(status === "authenticated");
+  // }, [status]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      setAddress(null);
       return;
     }
 
-    const ethersProvider = new BrowserProvider(provider);
-    const signer = await ethersProvider.getSigner();
+    const loadAddress = async () => {
+      const value = await getAddress();
+      setAddress(value ?? null);
+    };
 
-    // Sign the message
-    const signedMessage = await signer.signMessage(message);
+    ~loadAddress();
+  }, [isConnected, getAddress]);
 
-    console.log(signedMessage);
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await web3auth.initModal();
+        setProvider(web3auth.provider);
 
-    return signedMessage;
-  }, [provider]);
+        if (web3auth.connected) {
+          setConnected(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const contextValue = useMemo(() => ({
-    isConnected,
+    ~init();
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      isConnected,
+      isAuthenticated,
+      address,
+    }),
+    [isConnected, isAuthenticated, address],
+  );
+
+  return {
+    ...contextValue,
     login,
     logout,
     getAddress,
     getBalance,
     signMessage,
     getUserInfo,
-  }), [isConnected, login, logout, getAddress, getBalance, signMessage, getUserInfo]);
-
-  return contextValue;
+  };
 };
