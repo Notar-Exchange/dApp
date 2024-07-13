@@ -15,6 +15,7 @@ import LinkList from "@/components/layout/link-list";
 import { Routes } from "@/server/routes";
 import ThemeToggle from "@/components/theme/toggle";
 import MobileSidebar from "@/components/layout/m.sidebar";
+import ConnectButton from "@/components/web3/connect-button";
 
 function Navbar() {
   return (
@@ -29,8 +30,9 @@ function Navbar() {
 
         <MobileSidebar className="block md:!hidden" />
 
-        <div>
+        <div className="flex items-center gap-4">
           <ThemeToggle />
+          <ConnectButton />
         </div>
       </div>
     </nav>
