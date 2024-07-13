@@ -16,6 +16,7 @@ import { web3auth } from "@/web3/web3auth";
 import { BrowserProvider } from "ethers/providers";
 import { isAddress } from "ethers/address";
 import { formatEther } from "ethers/utils";
+import { WALLET_ADAPTERS } from "@web3auth/base";
 // import { useSession } from "next-auth/react";
 
 export type UseWeb3AuthData = ReturnType<typeof useWeb3>;
@@ -27,12 +28,29 @@ export const useWeb3 = () => {
   const [address, setAddress] = useState<string | null>(null);
   // const { status } = useSession();
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await web3auth.init();
+        setProvider(web3auth.provider);
+
+        if (web3auth.connected) {
+          setConnected(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    ~init();
+  }, []);
+
   const login = useCallback(async () => {
     if (isConnected) {
       return;
     }
 
-    const web3authProvider = await web3auth.connect();
+    const web3authProvider = await web3auth.connectTo(WALLET_ADAPTERS.METAMASK);
     setProvider(web3authProvider);
 
     if (web3auth.connected) {
@@ -130,23 +148,6 @@ export const useWeb3 = () => {
 
     ~loadAddress();
   }, [isConnected, getAddress]);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        await web3auth.initModal();
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setConnected(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    ~init();
-  }, []);
 
   const contextValue = useMemo(
     () => ({
