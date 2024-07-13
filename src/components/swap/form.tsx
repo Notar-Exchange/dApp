@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRightIcon } from "lucide-react";
+import { ArrowLeftRightIcon, Loader2 } from "lucide-react";
 
 import SwapInput from "@/components/swap/input";
 
@@ -76,6 +76,18 @@ function SwapForm() {
             disabled={form.formState.isSubmitting}
             rate={1.1}
           />
+          <Button
+            type="submit"
+            size="lg"
+            className="h-16 w-full text-2xl font-bold"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Accept"
+            )}
+          </Button>
         </div>
       </form>
     </Form>
