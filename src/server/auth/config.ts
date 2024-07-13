@@ -18,6 +18,9 @@ export const authConfig: NextAuthConfig = {
   pages: {
     signIn: "/",
     signOut: "/",
+    newUser: "/",
+    error: "/",
+    verifyRequest: "/"
   },
   session: {
     strategy: "jwt",
