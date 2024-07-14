@@ -48,7 +48,7 @@ export function validateDecimalInput(value?: unknown): boolean {
 }
 
 export function calculateRateValue(value: number, rate: number) {
-  const result = value * rate;
+  const result = value / rate;
   return Number(result.toFixed(5));
 }
 
