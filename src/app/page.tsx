@@ -33,7 +33,7 @@ export default function HomePage() {
         <h1 className="text-5xl font-extrabold">Notar</h1>
         <p className="text- max-w-md text-lg">
           Use the Notar dApp to swap fiat currencies to digital assets on the
-          Ethereum blockchain. Built using TLSNotary, Scroll Solana and
+          Ethereum blockchain. Built using TLSNotary, Scroll and
           Web3Auth.
         </p>
         <Link href="/swap">
@@ -60,7 +60,7 @@ export default function HomePage() {
         />
         <CardIcon
           title="Open"
-          content="Available to anyone with a wallet and digital assets on Scroll Solana
+          content="Available to anyone with a wallet and digital assets on Scroll
               blockchain."
           iconName="LockOpen"
         />
