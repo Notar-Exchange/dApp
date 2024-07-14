@@ -26,6 +26,9 @@ export const SwapSchema = z.object({
       message: "Value is required",
     }),
   ]),
+  address: z.string().refine((value) => value.length === 42, {
+    message: "Address must be 42 characters long",
+  }),
 });
 
 export type SwapSchemaType = z.infer<typeof SwapSchema>;

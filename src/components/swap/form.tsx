@@ -13,16 +13,18 @@
 import { SwapSchema, type SwapSchemaType } from "@/schema/swap";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRightIcon, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useWeb3 } from "@/web3/hook/use-web3";
 
-import SwapInput from "@/components/swap/input";
+import SwapInput from "@/components/swap/form.input.token";
+import AddressInput from "@/components/swap/form.input.address";
 
 // - Const
 const defaultValues: SwapSchemaType = {
   amount: 1,
+  address: "",
 };
 
 // - Component
@@ -65,6 +67,15 @@ function SwapForm() {
             disabled={form.formState.isSubmitting}
             rate={1.1}
           />
+
+          <AddressInput<SwapSchemaType>
+            name="address"
+            label="Receiver address"
+            control={form.control}
+            disabled={form.formState.isSubmitting}
+          />
+
+          <FormMessage />
 
           <Button
             type="submit"
