@@ -13,7 +13,7 @@
 import { SwapSchema, type SwapSchemaType } from "@/schema/swap";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useWeb3 } from "@/web3/hook/use-web3";
@@ -86,12 +86,13 @@ function SwapForm() {
             disabled={form.formState.isSubmitting}
             onAction={onAppend}
           />
+
           <SwapInput<SwapSchemaType>
             name="amount"
             label="You want"
             token="EUR"
             control={form.control}
-            disabled={form.formState.isSubmitting}
+            disabled={true}
             rate={1.1}
           />
 
@@ -110,8 +111,6 @@ function SwapForm() {
             control={form.control}
             disabled={form.formState.isSubmitting}
           />
-
-          <FormMessage />
 
           <Button
             type="submit"

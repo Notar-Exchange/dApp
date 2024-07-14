@@ -70,7 +70,7 @@ function SwapInput<FormValue extends FieldValues>({
                     {...field}
                     className={cn(
                       "h-14 pr-24 text-3xl",
-                      !!rate && "text-emerald-600 disabled:opacity-100",
+                      !!rate && "text-emerald-600 cursor-not-allowed disabled:opacity-100",
                     )}
                     type="text"
                     placeholder="100"
