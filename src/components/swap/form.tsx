@@ -17,11 +17,15 @@ import { Form, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useWeb3 } from "@/web3/hook/use-web3";
+import { Separator } from "@/components/ui/separator";
+import { writeCreateEscrow } from "@/web3/contracts/contract";
+import { generateEscrowId } from "@/lib/escrow";
 
 import SwapInput from "@/components/swap/form.input.token";
 import AddressInput from "@/components/swap/form.input.address";
 import TextInput from "@/components/swap/form.input.text";
-import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/server/routes";
 
 // - Const
 const defaultValues: SwapSchemaType = {
@@ -33,7 +37,7 @@ const defaultValues: SwapSchemaType = {
 // - Component
 function SwapForm() {
   const { isConnected } = useWeb3();
-
+  const router = useRouter();
   const form = useForm<SwapSchemaType>({
     defaultValues,
     resolver: zodResolver(SwapSchema),
@@ -41,7 +45,25 @@ function SwapForm() {
 
   // - Actions
   const onSubmit = async (values: SwapSchemaType) => {
-    console.log(values);
+    console.log("onSubmit", values);
+
+    try {
+      await writeCreateEscrow({
+        receiver: values.address,
+        receiverHandle: values.wise,
+        amount: Number(values.amount),
+        duration: 100,
+      });
+
+      const kecakHash = generateEscrowId(
+        values.address,
+        values.wise,
+        String(values.amount),
+        String(180), // Seconds
+      );
+
+      router.push(Routes.path.escrow(kecakHash));
+    } catch (error) {}
   };
 
   const onAppend = () => {

@@ -16,7 +16,7 @@ export const Routes = {
   path: {
     default: "/",
     swap: "/swap",
-    escrow: "/escrow",
+    escrow: (hash: string) => `/escrow/${hash}`,
     docs: "/docs",
   },
 };
