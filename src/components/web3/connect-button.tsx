@@ -12,7 +12,7 @@
 
 import type { ReactNode } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
-import { useWeb3, type UseWeb3AuthData } from "@/web3/hook/use-web3";
+import { useWeb3 } from "@/web3/hook/use-web3";
 import { Loader2 } from "lucide-react";
 
 type Props = ButtonProps;
