@@ -8,9 +8,11 @@
  * -----
  */
 
+import { scrollSepolia } from "wagmi/chains";
+
 export const Chain = {
   sepoliaScroll: {
-    chainId: "534351",
+    chainId: scrollSepolia.id,
     chainIdHex: "0x8274F",
     chainName: "Sepolia Scroll",
     nativeCurrency: {
