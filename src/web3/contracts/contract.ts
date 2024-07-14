@@ -17,8 +17,10 @@ import { env } from "@/env";
 import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
 import { Chain } from "@/web3/lib/chain";
 import { wagmiConfig } from "@/web3/wagmi/config";
+import { useReadContract } from "wagmi";
 import { parseUnits } from "ethers/utils";
 import { convertReceiverToHash } from "@/lib/swap";
+import { safeParseEscrowInfo } from "@/lib/escrow";
 
 // - Types
 export type CreateEscrowParams = {
@@ -27,12 +29,6 @@ export type CreateEscrowParams = {
   amount: number;
   duration: number;
 };
-
-export enum EscrowState {
-  IDLE = 0,
-  RELEASED = 1,
-  REFUNDED = 2,
-}
 
 // - Constants
 export const contractConfig = {
@@ -102,9 +98,18 @@ export async function writeCreateEscrow(params: CreateEscrowParams) {
   console.log("writeCreateEscrow::createEscrowReceipt", createEscrowReceipt);
 }
 
-export async function readEscrowInfo(escrowId: string): Promise<EscrowState> {
-  // TODO: Call getEscrowInfo
-  // Output read escrow
+export function useEscrowInfo(escrowId: string) {
+  const query = useReadContract({
+    ...contractConfig,
+    functionName: "getEscrowInfo",
+    args: [escrowId],
+    chainId: Chain.sepoliaScroll.chainId,
+    query: {
+      refetchInterval: 30 * 1000, // 5 seconds
+    },
+  });
 
-  return EscrowState.IDLE;
+  const parsedData = safeParseEscrowInfo(query.data as Record<string, unknown>);
+
+  return { ...query, data: parsedData };
 }

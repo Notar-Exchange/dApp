@@ -8,13 +8,13 @@
  * -----
  */
 
+import EscrowProgress from "@/components/escrow/progress";
+
 export default function EscrowPage({ params }: { params: { hash: string } }) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-gray-500 sm:text-[5rem]">
-          Escrow {params.hash}
-        </h1>
+        <EscrowProgress escrowId={params.hash} />
       </div>
     </div>
   );
