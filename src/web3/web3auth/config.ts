@@ -17,7 +17,7 @@ import { env } from "@/env";
 
 // - Private
 export const chainConfig: CustomChainConfig = {
-  chainId: Chain.sepoliaScroll.chainId,
+  chainId: Chain.sepoliaScroll.chainIdHex,
   rpcTarget: Chain.sepoliaScroll.rpcUrls,
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   displayName: Chain.sepoliaScroll.chainName,

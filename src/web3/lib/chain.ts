@@ -10,7 +10,8 @@
 
 export const Chain = {
   sepoliaScroll: {
-    chainId: "0x8274F",
+    chainId: "534351",
+    chainIdHex: "0x8274F",
     chainName: "Sepolia Scroll",
     nativeCurrency: {
       name: "Etherium",
