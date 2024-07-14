@@ -20,11 +20,14 @@ import { useWeb3 } from "@/web3/hook/use-web3";
 
 import SwapInput from "@/components/swap/form.input.token";
 import AddressInput from "@/components/swap/form.input.address";
+import TextInput from "@/components/swap/form.input.text";
+import { Separator } from "@/components/ui/separator";
 
 // - Const
 const defaultValues: SwapSchemaType = {
   amount: 1,
   address: "",
+  wise: "",
 };
 
 // - Component
@@ -52,7 +55,7 @@ function SwapForm() {
         <div className="flex flex-col gap-y-4">
           <SwapInput<SwapSchemaType>
             name="amount"
-            label="You want"
+            label="You pay"
             actionLabel="10+"
             token="USDT"
             control={form.control}
@@ -61,16 +64,25 @@ function SwapForm() {
           />
           <SwapInput<SwapSchemaType>
             name="amount"
-            label="You pay"
+            label="You want"
             token="EUR"
             control={form.control}
             disabled={form.formState.isSubmitting}
             rate={1.1}
           />
 
+          <Separator />
+
           <AddressInput<SwapSchemaType>
             name="address"
-            label="Receiver address"
+            label="Recipient address"
+            control={form.control}
+            disabled={form.formState.isSubmitting}
+          />
+
+          <TextInput<SwapSchemaType>
+            name="wise"
+            label="Your Wise ID"
             control={form.control}
             disabled={form.formState.isSubmitting}
           />
