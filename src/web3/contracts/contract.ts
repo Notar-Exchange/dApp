@@ -11,11 +11,14 @@
 import type { Address } from "viem";
 
 import { contractAbi } from "@/web3/abi/contract.abi";
+import { usdtAbi } from "@/web3/abi/usdt.abi";
+
 import { env } from "@/env";
 import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
 import { Chain } from "@/web3/lib/chain";
 import { wagmiConfig } from "@/web3/wagmi/config";
 import { parseUnits } from "ethers/utils";
+import { convertReceiverToHash } from "@/lib/swap";
 
 // - Types
 export type CreateEscrowParams = {
@@ -34,13 +37,22 @@ export enum EscrowState {
 // - Constants
 export const contractConfig = {
   abi: contractAbi,
-  address: env.NEXT_PUBLIC_CONTRACT_ADDRESS as Address,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  address: env.NEXT_PUBLIC_CONTRACT_ADDRESS as unknown as Address,
 } as const;
+
+export const usdtConfig = {
+  abi: usdtAbi,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  address: env.NEXT_PUBLIC_TOKEN_ADDRESS as Address,
+};
 
 // - Actions
 export async function writeCreateEscrow(params: CreateEscrowParams) {
   // Call approve
   const chainId = Chain.sepoliaScroll.chainId;
+
+  const receiverHash = convertReceiverToHash(params.receiver);
 
   const rawAmount = parseUnits(
     params.amount.toString(),
@@ -50,9 +62,9 @@ export async function writeCreateEscrow(params: CreateEscrowParams) {
   console.log("writeCreateEscrow::calling", params);
 
   const approveHash = await writeContract(wagmiConfig, {
-    ...contractConfig,
+    ...usdtConfig,
     functionName: "approve",
-    args: [env.NEXT_PUBLIC_TOKEN_ADDRESS, rawAmount],
+    args: [env.NEXT_PUBLIC_CONTRACT_ADDRESS, rawAmount],
     chainId,
   });
 
@@ -65,16 +77,17 @@ export async function writeCreateEscrow(params: CreateEscrowParams) {
   });
 
   console.log("writeCreateEscrow::approveReceipt", approveReceipt);
+  console.log("writeCreateEscrow::createEscrow", "args:", [
+    params.receiver,
+    receiverHash,
+    rawAmount,
+    BigInt(params.duration),
+  ]);
 
   const createEscrowHash = await writeContract(wagmiConfig, {
     ...contractConfig,
     functionName: "createEscrow",
-    args: [
-      params.receiver,
-      params.receiverHandle,
-      params.amount,
-      params.duration,
-    ],
+    args: [params.receiver, receiverHash, rawAmount, BigInt(params.duration)],
     chainId,
   });
 

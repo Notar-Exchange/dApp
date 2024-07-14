@@ -8,6 +8,10 @@
  * -----
  */
 
+import { keccak256 } from "ethers/crypto";
+import { parseUnits, toUtf8Bytes } from "ethers/utils";
+import { AbiCoder } from "ethers/abi";
+
 export const replaceCommasWithPeriods = (input?: string) => {
   return input?.replace(/,/g, ".");
 };
@@ -46,4 +50,30 @@ export function validateDecimalInput(value?: unknown): boolean {
 export function calculateRateValue(value: number, rate: number) {
   const result = value * rate;
   return Number(result.toFixed(5));
+}
+
+export function generateEscrowId(
+  _receiver: string,
+  _receiverHandle: string,
+  _amount: string,
+  _duration: string,
+) {
+  const rawAmount = parseUnits(_amount, 18);
+  const rawDuration = BigInt(_duration);
+  const rawHandler = toUtf8Bytes(_receiverHandle);
+
+  const data = [_receiver, rawHandler, rawAmount, rawDuration];
+
+  const bytes = AbiCoder.defaultAbiCoder().encode(
+    ["address", "bytes32", "uint256", "uint256"],
+    data,
+  );
+
+  const hash = keccak256(bytes);
+
+  return hash;
+}
+
+export function convertReceiverToHash(receiver: string) {
+  return keccak256(toUtf8Bytes(receiver));
 }

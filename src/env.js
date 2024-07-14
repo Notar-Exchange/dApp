@@ -48,7 +48,7 @@ export const env = createEnv({
     NEXT_PUBLIC_WEB3_CLIENT_ID: process.env.NEXT_PUBLIC_WEB3_CLIENT_ID,
     NEXT_PUBLIC_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-    NEXT_PUBLIC_TOKEN_ADDRESS: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    NEXT_PUBLIC_TOKEN_ADDRESS: process.env.NEXT_PUBLIC_TOKEN_ADDRESS,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
