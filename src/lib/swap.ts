@@ -60,9 +60,11 @@ export function generateEscrowId(
 ) {
   const rawAmount = parseUnits(_amount, 18);
   const rawDuration = BigInt(_duration);
-  const rawHandler = toUtf8Bytes(_receiverHandle);
+  const rawHandler = convertReceiverToHash(_receiverHandle);
 
   const data = [_receiver, rawHandler, rawAmount, rawDuration];
+
+  console.log(data);
 
   const bytes = AbiCoder.defaultAbiCoder().encode(
     ["address", "bytes32", "uint256", "uint256"],

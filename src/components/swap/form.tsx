@@ -19,7 +19,7 @@ import { Loader2 } from "lucide-react";
 import { useWeb3 } from "@/web3/hook/use-web3";
 import { Separator } from "@/components/ui/separator";
 import { writeCreateEscrow } from "@/web3/contracts/contract";
-import { generateEscrowId } from "@/lib/escrow";
+import { generateEscrowId } from "@/lib/swap";
 
 import SwapInput from "@/components/swap/form.input.token";
 import AddressInput from "@/components/swap/form.input.address";
@@ -52,7 +52,7 @@ function SwapForm() {
         receiver: values.address,
         receiverHandle: values.wise,
         amount: Number(values.amount),
-        duration: 100,
+        duration: 180,
       });
 
       const kecakHash = generateEscrowId(
@@ -63,7 +63,9 @@ function SwapForm() {
       );
 
       router.push(Routes.path.escrow(kecakHash));
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onAppend = () => {
