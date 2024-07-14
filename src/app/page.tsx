@@ -32,8 +32,8 @@ export default function HomePage() {
       <div className="flex flex-col items-center justify-center gap-8 p-4 text-center">
         <h1 className="text-5xl font-extrabold">Notar</h1>
         <p className="text- max-w-md text-lg">
-          Use our Notar protocol to swap swap fiat currencies to digital assets
-          on the Ethereum blockchain. Built using TLSNotary, Scroll Solana and
+          Use the Notar dApp to swap fiat currencies to digital assets on the
+          Ethereum blockchain. Built using TLSNotary, Scroll Solana and
           Web3Auth.
         </p>
         <Link href="/swap">
@@ -67,8 +67,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 gap-4 md:col-span-3 md:grid-cols-2 md:grid-rows-subgrid">
           <CardLink
             title="Get Started"
-            content="Start swapping your fiat currencies to digital assets on the
-              Scroll Solana blockchain."
+            content="Start swapping you digital assets for fiat currencies today!"
             link="/swap"
             linkTitle="Go to the App"
           />
