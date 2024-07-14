@@ -11,9 +11,11 @@
 
 "use client";
 
+import ConnectPlugin from "@/components/escrow/connect-plugin";
 import { parseEscrowState } from "@/lib/escrow";
+import { EscrowState } from "@/schema/escrow";
 import { useEscrowInfo } from "@/web3/contracts/contract";
-import { Loader2Icon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 function EscrowProgress({ escrowId }: { escrowId: string }) {
   const escrowInfo = useEscrowInfo(escrowId);
@@ -24,7 +26,7 @@ function EscrowProgress({ escrowId }: { escrowId: string }) {
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Escrow Progress
         </h1>
-        {escrowInfo.isFetching && <Loader2Icon className="animate-spin" />})
+        {escrowInfo.isFetching && <Loader2 className="animate-spin" />})
       </div>
     );
   }
@@ -34,6 +36,8 @@ function EscrowProgress({ escrowId }: { escrowId: string }) {
       <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
         Escrow Progress
       </h1>
+
+      {escrowInfo.data?.state === EscrowState.IDLE && <ConnectPlugin />}
 
       <div className="w-full space-y-2">
         <h3 className="text-xl">State</h3>

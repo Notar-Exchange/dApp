@@ -5,6 +5,7 @@
     "",
     "DEVNET",
     "Etherium",
-    "SEPOLIA"
+    "SEPOLIA",
+    "tlsn"
   ]
 }
