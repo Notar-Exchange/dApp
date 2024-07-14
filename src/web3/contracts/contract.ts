@@ -15,6 +15,7 @@ import { env } from "@/env";
 import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
 import { Chain } from "@/web3/lib/chain";
 import { wagmiConfig } from "@/web3/wagmi/config";
+import { parseUnits } from "ethers/utils";
 
 // - Types
 export type CreateEscrowParams = {
@@ -41,12 +42,17 @@ export async function writeCreateEscrow(params: CreateEscrowParams) {
   // Call approve
   const chainId = Chain.sepoliaScroll.chainId;
 
+  const rawAmount = parseUnits(
+    params.amount.toString(),
+    Chain.sepoliaScroll.nativeCurrency.decimals,
+  );
+
   console.log("writeCreateEscrow::calling", params);
 
   const approveHash = await writeContract(wagmiConfig, {
     ...contractConfig,
     functionName: "approve",
-    args: [],
+    args: [env.NEXT_PUBLIC_TOKEN_ADDRESS, rawAmount],
     chainId,
   });
 
